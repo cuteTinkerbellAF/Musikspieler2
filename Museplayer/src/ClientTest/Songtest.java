@@ -1,10 +1,10 @@
-
-public class Song {
+package ClientTest;
+public class Songtest {
     private final String interpret;
     private final String title;
     private int votes = 0;
 
-    public Song(String t, String i) {
+    public Songtest(String t, String i) {
         title = t;
         interpret = i;
     }
@@ -25,7 +25,7 @@ public class Song {
         votes = v;
     }
 
-    public Song getMe() {
+    public Songtest getMe() {
         return this;
     }
 }
