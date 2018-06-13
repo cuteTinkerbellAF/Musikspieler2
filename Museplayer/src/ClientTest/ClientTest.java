@@ -1,18 +1,24 @@
 package ClientTest;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientTest {
 
     private static List<Songtest> songList = new ArrayList<>();
+    private static List<JButton> buttonList = new ArrayList();
 
     public static void main(String[] args) {
-        //createList();
-        //guiAnzeige();
-        test();
+        createSongList();
+        createButtonList();
+        createButtonAction();
+        guiAnzeige();
+        //test();
 
     }
 
@@ -60,8 +66,10 @@ public class ClientTest {
             titelPanel.add(title, BorderLayout.CENTER);
 
 
-            JButton voteButton = new JButton("upvote"); //ICON!!!!!
-            titelPanel.add(voteButton, BorderLayout.LINE_END);
+            titelPanel.add(buttonList.get(z), BorderLayout.LINE_END);
+
+            //JButton voteButton = new JButton("upvote"); //ICON!!!!!
+            //titelPanel.add(voteButton, BorderLayout.LINE_END);
 
 
         }
@@ -76,7 +84,7 @@ public class ClientTest {
     }
 
 
-    private static void createList() {
+    private static void createSongList() {
 
 
         for (int z = 0; z < 100; z++) {
@@ -87,14 +95,31 @@ public class ClientTest {
         }
     }
 
-    private static void test(){
-        List buttonList = new ArrayList();
-        for (int z  = 0; z<10;z++){
+
+
+    private static void createButtonList(){
+        for (int z = 0; z<songList.size();z++){
             buttonList.add(new JButton("upvote"));
         }
 
-        for (int z =0 ;z<buttonList.size();z++){
-            System.out.println(buttonList.get(z));
+    }
+
+    private static void createButtonAction(){
+        for(int z = 0;z<buttonList.size();z++){
+            buttonList.get(z).addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Du hast für lied ka gestimmt");
+
+                }
+            });
         }
     }
+
+
+    private static void test(){
+
+    }
+
+
 }
