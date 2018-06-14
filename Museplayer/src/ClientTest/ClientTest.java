@@ -11,7 +11,7 @@ import java.util.List;
 public class ClientTest {
 
     private static List<Songtest> songList = new ArrayList<>();
-    private static List<JButton> buttonList = new ArrayList();
+    private static List<JButton> buttonList = new ArrayList<>();
 
     public static void main(String[] args) {
         createSongList();
@@ -105,14 +105,17 @@ public class ClientTest {
     }
 
     private static void createButtonAction(){
-        for(int z = 0;z<buttonList.size();z++){
-            buttonList.get(z).addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("Du hast für lied ka gestimmt");
+        for (final JButton button : buttonList) {
+            button.addActionListener(e ->{
+                        int i = buttonList.indexOf(button);
+                        //button.setIcon("");
+                        System.out.print(songList.get(i).getTitle());
+                        int v = songList.get(i).getVotes();
+                        System.out.print(v);
 
-                }
-            });
+
+                    }
+            );
         }
     }
 
