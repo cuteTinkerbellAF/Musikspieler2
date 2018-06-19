@@ -1,10 +1,7 @@
 package ClientTest;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +19,7 @@ public class ClientTest {
 
     }
 
-    public static void guiAnzeige() {
+    private static void guiAnzeige() {
         //erstellt MainWindow
         JFrame mainWindow = new JFrame("Museplayer");
         mainWindow.setVisible(true);
@@ -96,31 +93,31 @@ public class ClientTest {
     }
 
 
-
-    private static void createButtonList(){
-        for (int z = 0; z<songList.size();z++){
+    private static void createButtonList() {
+        for (int z = 0; z < songList.size(); z++) {
             buttonList.add(new JButton("upvote"));
         }
 
     }
 
-    private static void createButtonAction(){
+    private static void createButtonAction() {
         for (final JButton button : buttonList) {
-            button.addActionListener(e ->{
+            button.addActionListener(e -> {
                         int i = buttonList.indexOf(button);
                         //button.setIcon("");
-                        System.out.print(songList.get(i).getTitle());
+                        System.out.println(songList.get(i).getTitle());
                         int v = songList.get(i).getVotes();
-                        System.out.print(v);
-
-
+                        System.out.println(v);
+                        v=v+1;
+                        songList.get(i).setVotes(v);
+                        System.out.print(songList.get(i).getVotes());
                     }
             );
         }
     }
 
 
-    private static void test(){
+    private static void test() {
 
     }
 
