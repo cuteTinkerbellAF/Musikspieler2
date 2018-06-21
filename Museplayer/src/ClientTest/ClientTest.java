@@ -2,6 +2,9 @@ package ClientTest;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,13 +85,30 @@ public class ClientTest {
 
 
     private static void createSongList() {
+        File file = new File("songs/");
+        if (!file.exists()) throw new RuntimeException("songfolder does not exist");
+
+        File[] songs = file.listFiles();
+        assert songs != null;
+        for (File musicFile : songs) {
+            try (InputStream input = new FileInputStream(musicFile)) {
+                byte[] b = new byte[(int) musicFile.length()];
+                int i = 0;
+                byte[] buffer = new byte[1028 * 8];
+                while (true) {
+                    int x = input.read(buffer);
+                    if (x == -1) break;
+
+                    System.arraycopy(buffer, 0, b, i, x);
+
+                    i += x;
+                }
 
 
-        for (int z = 0; z < 100; z++) {
-            String i = "fabi";
-            String t = "titel" + z;
 
-            songList.add(new Songtest(t, i));
+            } catch (Throwable t) {
+
+            }
         }
     }
 
@@ -108,7 +128,7 @@ public class ClientTest {
                         System.out.println(songList.get(i).getTitle());
                         int v = songList.get(i).getVotes();
                         System.out.println(v);
-                        v=v+1;
+                        v = v + 1;
                         songList.get(i).setVotes(v);
                         System.out.print(songList.get(i).getVotes());
                     }
