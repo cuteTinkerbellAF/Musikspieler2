@@ -10,11 +10,12 @@ import java.util.List;
 
 public class ClientTest {
 
-    private static List<Songtest> songList = new ArrayList<>();
-    private static List<JButton> buttonList = new ArrayList<>();
+    private static final List<Songtest> songList = new ArrayList<>();
+    private static final List<JButton> buttonList = new ArrayList<>();
 
     public static void main(String[] args) {
-        createSongList();
+        //createSongList();
+        createSongListTest();
         createButtonList();
         createButtonAction();
         guiAnzeige();
@@ -90,16 +91,16 @@ public class ClientTest {
 
         File[] songs = file.listFiles();
         assert songs != null;
-        for (File musicFile : songs) {
-            try (InputStream input = new FileInputStream(musicFile)) {
-                byte[] b = new byte[(int) musicFile.length()];
-                int i = 0;
-                byte[] buffer = new byte[1028 * 8];
-                while (true) {
-                    int x = input.read(buffer);
-                    if (x == -1) break;
+                    for (File musicFile : songs) {
+                        try (InputStream input = new FileInputStream(musicFile)) {
+                            byte[] b = new byte[(int) musicFile.length()];
+                            int i = 0;
+                            byte[] buffer = new byte[1028 * 8];
+                            while (true) {
+                                int x = input.read(buffer);
+                                if (x == -1) break;
 
-                    System.arraycopy(buffer, 0, b, i, x);
+                                System.arraycopy(buffer, 0, b, i, x);
 
                     i += x;
                 }
@@ -120,6 +121,8 @@ public class ClientTest {
 
     }
 
+
+
     private static void createButtonAction() {
         for (final JButton button : buttonList) {
             button.addActionListener(e -> {
@@ -136,10 +139,13 @@ public class ClientTest {
         }
     }
 
+    private static void createSongListTest(){
+        for (int i = 0; i<50;i++){
+            songList.add(new Songtest("titel "+i, "fabi"));
+        }
+    }
 
     private static void test() {
 
     }
-
-
 }
