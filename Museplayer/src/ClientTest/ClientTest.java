@@ -12,20 +12,23 @@ public class ClientTest {
 
     private static final List<Songtest> songList = new ArrayList<>();
     private static final List<JButton> buttonList = new ArrayList<>();
+    private static final List<Songtest> voteList = new ArrayList<>();
+    static JFrame mainWindow = new JFrame("Museplayer");
 
     public static void main(String[] args) {
         //createSongList();
         createSongListTest();
         createButtonList();
         createButtonAction();
+        test();
         guiAnzeige();
-        //test();
+
 
     }
 
     private static void guiAnzeige() {
         //erstellt MainWindow
-        JFrame mainWindow = new JFrame("Museplayer");
+        //JFrame mainWindow = new JFrame("Museplayer");
         mainWindow.setVisible(true);
         mainWindow.setSize(1000, 700);
         mainWindow.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
@@ -44,11 +47,22 @@ public class ClientTest {
         leftScrollPanel.setBackground(Color.green);
         rootPanel.add(leftScrollPanel);
         leftScrollPanel.getVerticalScrollBar().setUnitIncrement(15);
-//erstellt ein rechtesPanel
-        JPanel rightPanel = new JPanel(new BorderLayout());
-        rightPanel.setBackground(Color.yellow);
-        rootPanel.add(rightPanel);
+//erstellt Player gui
+        JPanel playerPanel = new JPanel(new BorderLayout());
+        mainWindow.add(playerPanel, BorderLayout.PAGE_END);
 
+        JLabel placeholder = new JLabel("placeholder");
+        playerPanel.add(placeholder, BorderLayout.CENTER);
+
+        //erstellt das backpanel und fügt einen zurück knopf hinzu
+        JPanel backPanel = new JPanel(new BorderLayout());
+        mainWindow.add(backPanel, BorderLayout.PAGE_START);
+
+        JButton backButton = new JButton("back");
+        backPanel.add(backButton, BorderLayout.LINE_START);
+        //backButton.setIcon(getClass().getResource("/main/icons/back.png"));
+
+//erstellt ein rechtesPanel
 
         for (int z = 0; z < songList.size(); z++) { //erstellt die einzelnen Panels für alle Lieder, fügt einen upvotebutton hinzu und fügt diese Panels dem contentPanel hinzu
 
@@ -75,14 +89,26 @@ public class ClientTest {
 
         }
 
-//erstellt das backpanel und fügt einen zurück knopf hinzu
-        JPanel backPanel = new JPanel(new BorderLayout());
-        mainWindow.add(backPanel, BorderLayout.PAGE_START);
+        JPanel contentPanels2 = new JPanel();
+        contentPanels2.setLayout(new BoxLayout(contentPanels2, BoxLayout.PAGE_AXIS));
 
-        JButton backButton = new JButton("back");
-        backPanel.add(backButton, BorderLayout.LINE_START);
-        //backButton.setIcon(getClass().getResource("/main/icons/back.png"));
+        JScrollPane rightScrollPanel = new JScrollPane(contentPanels2, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        rightScrollPanel.setBackground(Color.green);
+        rootPanel.add(rightScrollPanel);
+        rightScrollPanel.getVerticalScrollBar().setUnitIncrement(15);
+
+        for (int z = 0; z < songList.size(); z++){
+            JPanel titlePanelRight = new JPanel(new BorderLayout());
+            titlePanelRight.setBackground(Color.green);
+            contentPanels2.add(titlePanelRight);
+
+            JLabel titleVotes = new JLabel(voteList.get(z).getTitle());
+            titleVotes.setBackground(Color.green);
+            titlePanelRight.add(titleVotes);
+        }
+
     }
+
 
 
     private static void createSongList() {
@@ -91,20 +117,19 @@ public class ClientTest {
 
         File[] songs = file.listFiles();
         assert songs != null;
-                    for (File musicFile : songs) {
-                        try (InputStream input = new FileInputStream(musicFile)) {
-                            byte[] b = new byte[(int) musicFile.length()];
-                            int i = 0;
-                            byte[] buffer = new byte[1028 * 8];
-                            while (true) {
-                                int x = input.read(buffer);
-                                if (x == -1) break;
+        for (File musicFile : songs) {
+            try (InputStream input = new FileInputStream(musicFile)) {
+                byte[] b = new byte[(int) musicFile.length()];
+                int i = 0;
+                byte[] buffer = new byte[1028 * 8];
+                while (true) {
+                    int x = input.read(buffer);
+                    if (x == -1) break;
 
-                                System.arraycopy(buffer, 0, b, i, x);
+                    System.arraycopy(buffer, 0, b, i, x);
 
                     i += x;
                 }
-
 
 
             } catch (Throwable t) {
@@ -122,7 +147,6 @@ public class ClientTest {
     }
 
 
-
     private static void createButtonAction() {
         for (final JButton button : buttonList) {
             button.addActionListener(e -> {
@@ -134,18 +158,21 @@ public class ClientTest {
                         v = v + 1;
                         songList.get(i).setVotes(v);
                         System.out.print(songList.get(i).getVotes());
+                        mainWindow.repaint();
                     }
             );
         }
     }
 
-    private static void createSongListTest(){
-        for (int i = 0; i<50;i++){
-            songList.add(new Songtest("titel "+i, "fabi"));
+    private static void createSongListTest() {
+        for (int i = 0; i < 50; i++) {
+            songList.add(new Songtest("titel " + i, "fabi"));
         }
     }
 
     private static void test() {
-
+        for(int i = 0;i<songList.size();i++){
+            voteList.add(songList.get(i));
+        }
     }
 }
