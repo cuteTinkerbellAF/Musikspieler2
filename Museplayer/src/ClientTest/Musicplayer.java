@@ -2,13 +2,13 @@ package ClientTest;
 //package musicmain;
 import javax.swing.*;
 
-import sun.audio.*;
+//import sun.audio.*;
 
 import java.awt.*;
 
 public class Musicplayer {
 
-    AudioStream as;
+   // AudioStream as;
     JButton play = new JButton("play");
     JButton stop = new JButton("stop");
     JButton pause = new JButton("pause");

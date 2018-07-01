@@ -9,27 +9,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientTest {
-
+    private static String username = "";
     private static final List<Songtest> songList = new ArrayList<>();
     private static final List<JButton> buttonList = new ArrayList<>();
     private static final List<Songtest> voteList = new ArrayList<>();
-    static JFrame mainWindow = new JFrame("Museplayer");
+    private static JFrame mainWindow = new JFrame("Museplayer");
 
     public static void main(String[] args) {
         //createSongList();
         createSongListTest();
+        createVoteList();
         createButtonList();
         createButtonAction();
-        test();
         guiAnzeige();
+        createLogInGUI();
 
 
     }
 
     private static void guiAnzeige() {
+
+
         //erstellt MainWindow
         //JFrame mainWindow = new JFrame("Museplayer");
-        mainWindow.setVisible(true);
+       // mainWindow.setVisible(true);
         mainWindow.setSize(1000, 700);
         mainWindow.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         mainWindow.setResizable(true);
@@ -47,22 +50,27 @@ public class ClientTest {
         leftScrollPanel.setBackground(Color.green);
         rootPanel.add(leftScrollPanel);
         leftScrollPanel.getVerticalScrollBar().setUnitIncrement(15);
-//erstellt Player gui
+//erstellt Player gui HIER MUSS NOCH GEARBEITET WERDEN!!!!!!!!!
         JPanel playerPanel = new JPanel(new BorderLayout());
         mainWindow.add(playerPanel, BorderLayout.PAGE_END);
 
         JLabel placeholder = new JLabel("placeholder");
         playerPanel.add(placeholder, BorderLayout.CENTER);
 
-        //erstellt das backpanel und fügt einen zurück knopf hinzu
-        JPanel backPanel = new JPanel(new BorderLayout());
-        mainWindow.add(backPanel, BorderLayout.PAGE_START);
+ //erstellt das topPanel und fügt einen benutzerwechselen knopf hinzu
+        JPanel topPanel = new JPanel(new BorderLayout());
+        mainWindow.add(topPanel, BorderLayout.PAGE_START);
 
-        JButton backButton = new JButton("back");
-        backPanel.add(backButton, BorderLayout.LINE_START);
+        JButton logoutButton = new JButton("Benutzer wechseln");
+        topPanel.add(logoutButton, BorderLayout.LINE_START);
         //backButton.setIcon(getClass().getResource("/main/icons/back.png"));
+        logoutButton.addActionListener(e -> {
+            createLogInGUI();
+        });
 
-//erstellt ein rechtesPanel
+        JLabel loggedin = new JLabel("Angemeldet als "+username+"  ");
+        topPanel.add(loggedin,BorderLayout.LINE_END);
+
 
         for (int z = 0; z < songList.size(); z++) { //erstellt die einzelnen Panels für alle Lieder, fügt einen upvotebutton hinzu und fügt diese Panels dem contentPanel hinzu
 
@@ -83,11 +91,10 @@ public class ClientTest {
 
             titelPanel.add(buttonList.get(z), BorderLayout.LINE_END);
 
-            //JButton voteButton = new JButton("upvote"); //ICON!!!!!
-            //titelPanel.add(voteButton, BorderLayout.LINE_END);
 
 
         }
+
 
         JPanel contentPanels2 = new JPanel();
         contentPanels2.setLayout(new BoxLayout(contentPanels2, BoxLayout.PAGE_AXIS));
@@ -97,7 +104,7 @@ public class ClientTest {
         rootPanel.add(rightScrollPanel);
         rightScrollPanel.getVerticalScrollBar().setUnitIncrement(15);
 
-        for (int z = 0; z < songList.size(); z++){
+        for (int z = 0; z < songList.size(); z++) {
             JPanel titlePanelRight = new JPanel(new BorderLayout());
             titlePanelRight.setBackground(Color.green);
             contentPanels2.add(titlePanelRight);
@@ -105,10 +112,15 @@ public class ClientTest {
             JLabel titleVotes = new JLabel(voteList.get(z).getTitle());
             titleVotes.setBackground(Color.green);
             titlePanelRight.add(titleVotes);
+
+            if (z % 2 == 0) {
+                titlePanelRight.setBackground(Color.lightGray);
+            } else {
+                titlePanelRight.setBackground(Color.white);
+            }
         }
-
+        mainWindow.setVisible(true);
     }
-
 
 
     private static void createSongList() {
@@ -146,7 +158,6 @@ public class ClientTest {
 
     }
 
-
     private static void createButtonAction() {
         for (final JButton button : buttonList) {
             button.addActionListener(e -> {
@@ -170,9 +181,24 @@ public class ClientTest {
         }
     }
 
-    private static void test() {
-        for(int i = 0;i<songList.size();i++){
+    private static void createVoteList() {
+        for (int i = 0; i < songList.size(); i++) {
             voteList.add(songList.get(i));
         }
+    }
+
+    private static void createLogInGUI(){
+        String input = JOptionPane.showInputDialog( "Username" );
+        if (input == null){
+            System.exit(0);
+        }
+        else{
+
+        }
+    }
+    private static void test(){
+
+
+
     }
 }
