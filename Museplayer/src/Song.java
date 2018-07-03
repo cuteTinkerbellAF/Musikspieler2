@@ -1,5 +1,4 @@
 
-
 public class Song {
     private final String interpret;
     private final String title;

@@ -16,14 +16,14 @@ public class ClientTest {
     private static JFrame mainWindow = new JFrame("Museplayer");
 
     public static void main(String[] args) {
-        //createSongList();
+        //-----createSongList();
         createSongListTest();
         createVoteList();
         createButtonList();
         createButtonAction();
         guiAnzeige();
         createLogInGUI();
-
+        //test();
 
     }
 
@@ -210,7 +210,18 @@ public class ClientTest {
     }
     private static void test(){
 
+        JFrame test = new JFrame("test");
+        test.setSize(200,200);
 
+        JPanel bla = new JPanel();
+        test.add(bla);
 
+        JLabel asdf = new JLabel("asdf");
+        bla.add(asdf);
+
+        test.setVisible(true);
+
+        System.out.println(asdf.getHeight());
+        System.out.println(asdf.getWidth());
     }
 }
