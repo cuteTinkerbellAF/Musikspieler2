@@ -11,7 +11,6 @@ public class ClientTest {
     private static final List<Songtest> songList = new ArrayList<>();
     private static final List<JButton> buttonList = new ArrayList<>();
     private static final List<Songtest> voteList = new ArrayList<>();
-    private static final List<String> userList = new ArrayList<>();
     private static JFrame mainWindow = new JFrame("Museplayer");
 
     public static void main(String[] args) {
@@ -201,7 +200,6 @@ public class ClientTest {
                 test();
                 username = newusername;
             }
-            userList.add(username);
         }
     }
 
