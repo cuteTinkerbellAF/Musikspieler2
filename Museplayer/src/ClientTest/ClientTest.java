@@ -65,7 +65,7 @@ public class ClientTest {
         topPanel.add(logoutButton, BorderLayout.LINE_START);
         //backButton.setIcon(getClass().getResource("/main/icons/back.png"));
         logoutButton.addActionListener(e -> {
-            createLogInGUI();
+            createLogInGUI2();
         });
 
         JLabel loggedin = new JLabel("Angemeldet als "+username+"  ");
@@ -193,8 +193,20 @@ public class ClientTest {
             System.exit(0);
         }
         else{
-
+            username = input;
+            System.out.println(username);
+            mainWindow.repaint();
         }
+    }
+
+    private static void createLogInGUI2 (){
+        String input2 = JOptionPane.showInputDialog("Username");
+        if (input2 != null){
+            username = input2;
+            System.out.println(username);
+            mainWindow.repaint();
+        }
+
     }
     private static void test(){
 
