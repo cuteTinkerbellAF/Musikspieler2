@@ -10,32 +10,33 @@ import java.util.List;
 
 public class ClientTest {
     private static String username = "";
+    private static String newusername;
     private static final List<Songtest> songList = new ArrayList<>();
     private static final List<JButton> buttonList = new ArrayList<>();
     private static final List<Songtest> voteList = new ArrayList<>();
+    private static final List<String> userList = new ArrayList<>();
     private static JFrame mainWindow = new JFrame("Museplayer");
 
     public static void main(String[] args) {
+
         //-----createSongList();
         createSongListTest();
         createVoteList();
+
         createButtonList();
         createButtonAction();
+        bubblesort();
         guiAnzeige();
         createLogInGUI();
         //test();
-
     }
 
     private static void guiAnzeige() {
 
-
-        //erstellt MainWindow
-        //JFrame mainWindow = new JFrame("Museplayer");
-       // mainWindow.setVisible(true);
+//erstellt MainWindow
         mainWindow.setSize(1000, 700);
         mainWindow.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
-        mainWindow.setResizable(true);
+        mainWindow.setResizable(false);
         mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainWindow.setLayout(new BorderLayout());
 //erstellt rootPanel als "erstes" Panel
@@ -50,7 +51,8 @@ public class ClientTest {
         leftScrollPanel.setBackground(Color.green);
         rootPanel.add(leftScrollPanel);
         leftScrollPanel.getVerticalScrollBar().setUnitIncrement(15);
-//erstellt Player gui HIER MUSS NOCH GEARBEITET WERDEN!!!!!!!!!
+
+ //erstellt Player gui HIER MUSS NOCH GEARBEITET WERDEN!!!!!!!!!
         JPanel playerPanel = new JPanel(new BorderLayout());
         mainWindow.add(playerPanel, BorderLayout.PAGE_END);
 
@@ -84,8 +86,7 @@ public class ClientTest {
                 titelPanel.setBackground(Color.white);
             }
 
-            JLabel title = new JLabel(songList.get(z).getTitle());
-            // title.setFont(new Font("", Font.PLAIN, 20));
+            JLabel title = new JLabel("  "+songList.get(z).getTitle());
             titelPanel.add(title, BorderLayout.CENTER);
 
 
@@ -104,14 +105,20 @@ public class ClientTest {
         rootPanel.add(rightScrollPanel);
         rightScrollPanel.getVerticalScrollBar().setUnitIncrement(15);
 
+
+
+        mainWindow.setVisible(true);
+
         for (int z = 0; z < songList.size(); z++) {
             JPanel titlePanelRight = new JPanel(new BorderLayout());
-            titlePanelRight.setBackground(Color.green);
             contentPanels2.add(titlePanelRight);
+            titlePanelRight.setPreferredSize(new Dimension(contentPanel.getComponent(0).getWidth(),contentPanel.getComponent(0).getHeight()));
 
-            JLabel titleVotes = new JLabel(voteList.get(z).getTitle());
-            titleVotes.setBackground(Color.green);
-            titlePanelRight.add(titleVotes);
+            JLabel titleVotes = new JLabel(voteList.get(z).getTitle(),SwingConstants.CENTER);
+            titlePanelRight.add(titleVotes, BorderLayout.CENTER);
+
+            JLabel voteVotes = new JLabel("Stimmen: " + voteList.get(z).getVotes()+"   ");
+            titlePanelRight.add(voteVotes,BorderLayout.LINE_END);
 
             if (z % 2 == 0) {
                 titlePanelRight.setBackground(Color.lightGray);
@@ -119,7 +126,6 @@ public class ClientTest {
                 titlePanelRight.setBackground(Color.white);
             }
         }
-        mainWindow.setVisible(true);
     }
 
 
@@ -157,71 +163,83 @@ public class ClientTest {
         }
 
     }
-
     private static void createButtonAction() {
         for (final JButton button : buttonList) {
             button.addActionListener(e -> {
                         int i = buttonList.indexOf(button);
                         //button.setIcon("");
-                        System.out.println(songList.get(i).getTitle());
+                        buttonList.get(i).setEnabled(false);
+                        //System.out.println(songList.get(i).getTitle());
                         int v = songList.get(i).getVotes();
-                        System.out.println(v);
+                        //System.out.println(v);
                         v = v + 1;
                         songList.get(i).setVotes(v);
-                        System.out.print(songList.get(i).getVotes());
-                        mainWindow.repaint();
+                        //System.out.print(songList.get(i).getVotes());
+                        bubblesort();
+                        mainWindow.repaint(1);
                     }
             );
         }
     }
-
     private static void createSongListTest() {
         for (int i = 0; i < 50; i++) {
             songList.add(new Songtest("titel " + i, "fabi"));
         }
     }
-
     private static void createVoteList() {
         for (int i = 0; i < songList.size(); i++) {
             voteList.add(songList.get(i));
         }
     }
-
     private static void createLogInGUI(){
         String input = JOptionPane.showInputDialog( "Username" );
         if (input == null){
             System.exit(0);
         }
         else{
-            username = input;
-            System.out.println(username);
-            mainWindow.repaint();
+            newusername = input;
+            activateButtons();
+            mainWindow.getComponent(0).repaint(); //geht nicht
         }
-    }
-
-    private static void createLogInGUI2 (){
+    }      //erstellt den Dialog der auftaucht sobald man das Programm zum ersten mal startet, bei abbruch oder X wird programm beendet
+    private static void createLogInGUI2 (){     //erstellt den Dialog der auftaucht wenn man den benutzer wechseln will, andere action bei abbruch
         String input2 = JOptionPane.showInputDialog("Username");
         if (input2 != null){
-            username = input2;
-            System.out.println(username);
-            mainWindow.repaint();
+            newusername = input2;
+            activateButtons();
+            mainWindow.repaint(); //geht nicht
         }
 
     }
+
+    private static void bubblesort(){
+        Songtest temp;
+        for(int i=1; i<voteList.size(); i++) {
+            for(int j=0; j<voteList.size()-i; j++) {
+                if(voteList.get(j).getVotes()<voteList.get(j+1).getVotes()) {
+
+                    temp=voteList.get(j);
+                    voteList.set(j, voteList.get(j+1));
+                    voteList.set(j+1,temp);
+
+                }
+
+            }
+        }
+    } //sortiert die lieder nach den Votes
+
+    private static void activateButtons(){
+        if(!newusername.equals(username)){
+            for (int i = 0; i<buttonList.size();i++){
+                buttonList.get(i).setEnabled(true);
+                test();
+                username = newusername;
+            }
+            userList.add(username);
+        }
+    }
+
     private static void test(){
 
-        JFrame test = new JFrame("test");
-        test.setSize(200,200);
-
-        JPanel bla = new JPanel();
-        test.add(bla);
-
-        JLabel asdf = new JLabel("asdf");
-        bla.add(asdf);
-
-        test.setVisible(true);
-
-        System.out.println(asdf.getHeight());
-        System.out.println(asdf.getWidth());
     }
 }

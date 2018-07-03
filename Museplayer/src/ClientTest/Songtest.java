@@ -3,6 +3,7 @@ public class Songtest {
     private final String interpret;
     private final String title;
     private int votes = 0;
+    private boolean playing = false;
 
     public Songtest(String t, String i) {
         title = t;
@@ -23,6 +24,14 @@ public class Songtest {
 
     public void setVotes(int v) {
         votes = v;
+    }
+
+    public boolean getPlaying(){
+        return playing;
+    }
+
+    public void setPlaying(boolean b){
+        playing = b;
     }
 
     public Songtest getMe() {
