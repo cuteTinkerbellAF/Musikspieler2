@@ -2,9 +2,6 @@ package ClientTest;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +16,6 @@ public class ClientTest {
 
     public static void main(String[] args) {
 
-        //-----createSongList();
         createSongListTest();
         createVoteList();
 
@@ -54,9 +50,10 @@ public class ClientTest {
 
  //erstellt Player gui HIER MUSS NOCH GEARBEITET WERDEN!!!!!!!!!
         JPanel playerPanel = new JPanel(new BorderLayout());
+        playerPanel.setPreferredSize(new Dimension(mainWindow.getWidth(),40));
         mainWindow.add(playerPanel, BorderLayout.PAGE_END);
 
-        JLabel placeholder = new JLabel("placeholder");
+        JLabel placeholder = new JLabel("Gerade spielt: "+getPlaying());
         playerPanel.add(placeholder, BorderLayout.CENTER);
 
  //erstellt das topPanel und fügt einen benutzerwechselen knopf hinzu
@@ -129,34 +126,6 @@ public class ClientTest {
     }
 
 
-    private static void createSongList() {
-        File file = new File("songs/");
-        if (!file.exists()) throw new RuntimeException("songfolder does not exist");
-
-        File[] songs = file.listFiles();
-        assert songs != null;
-        for (File musicFile : songs) {
-            try (InputStream input = new FileInputStream(musicFile)) {
-                byte[] b = new byte[(int) musicFile.length()];
-                int i = 0;
-                byte[] buffer = new byte[1028 * 8];
-                while (true) {
-                    int x = input.read(buffer);
-                    if (x == -1) break;
-
-                    System.arraycopy(buffer, 0, b, i, x);
-
-                    i += x;
-                }
-
-
-            } catch (Throwable t) {
-
-            }
-        }
-    }
-
-
     private static void createButtonList() {
         for (int z = 0; z < songList.size(); z++) {
             buttonList.add(new JButton("upvote"));
@@ -169,14 +138,11 @@ public class ClientTest {
                         int i = buttonList.indexOf(button);
                         //button.setIcon("");
                         buttonList.get(i).setEnabled(false);
-                        //System.out.println(songList.get(i).getTitle());
                         int v = songList.get(i).getVotes();
-                        //System.out.println(v);
                         v = v + 1;
                         songList.get(i).setVotes(v);
-                        //System.out.print(songList.get(i).getVotes());
                         bubblesort();
-                        mainWindow.repaint(1);
+                        mainWindow.repaint();
                     }
             );
         }
@@ -237,6 +203,15 @@ public class ClientTest {
             }
             userList.add(username);
         }
+    }
+
+    private static String getPlaying(){
+        for(int i = 0; i<songList.size();i++){
+            if (songList.get(i).getPlaying()){
+                return songList.get(i).getTitle();
+            }
+        }
+        return "leider gar nichts :(";
     }
 
     private static void test(){
