@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientTest {
-    private static String username = "";
+//erstellt verschiedene Listen und Variablen die aus der ganzen Klasse aufbar sein sollen
+    private static String username = "Benutzer";
     private static String newusername;
     private static final List<Songtest> songList = new ArrayList<>();
     private static final List<JButton> buttonList = new ArrayList<>();
@@ -14,7 +15,7 @@ public class ClientTest {
     private static JFrame mainWindow = new JFrame("Museplayer");
 
     public static void main(String[] args) {
-
+//mainMethode; Aufruf der benötigten Methoden
         createSongListTest();
         createVoteList();
 
@@ -23,7 +24,6 @@ public class ClientTest {
         bubblesort();
         guiAnzeige();
         createLogInGUI();
-        //test();
     }
 
     private static void guiAnzeige() {
@@ -39,23 +39,22 @@ public class ClientTest {
         mainWindow.add(rootPanel, BorderLayout.CENTER);
 //erstellt contentPanel in dem später die titelpanel hinzugefügt werden
         JPanel contentPanel = new JPanel();
-        //contentPanel.setBackground(Color.cyan);
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
-//erstellt ein scrollpanel in der linken hälfte
+//erstellt ein scrollpanel in der linken hälfte und verändert scrollgeschindigkeit
         JScrollPane leftScrollPanel = new JScrollPane(contentPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         leftScrollPanel.setBackground(Color.green);
         rootPanel.add(leftScrollPanel);
         leftScrollPanel.getVerticalScrollBar().setUnitIncrement(15);
 
- //erstellt Player gui HIER MUSS NOCH GEARBEITET WERDEN!!!!!!!!!
+ //erstellt die Fußzeile in der das aktuell gespielte lied angezeigt wird
         JPanel playerPanel = new JPanel(new BorderLayout());
         playerPanel.setPreferredSize(new Dimension(mainWindow.getWidth(),40));
         mainWindow.add(playerPanel, BorderLayout.PAGE_END);
 
-        JLabel placeholder = new JLabel("Gerade spielt: "+getPlaying());
-        playerPanel.add(placeholder, BorderLayout.CENTER);
+        JLabel activeSong = new JLabel("Gerade spielt: "+getPlaying());
+        playerPanel.add(activeSong, BorderLayout.CENTER);
 
- //erstellt das topPanel und fügt einen benutzerwechselen knopf hinzu
+ //erstellt das topPanel(Kopfzeile) und fügt einen benutzerwechseln Knopf hinzu
         JPanel topPanel = new JPanel(new BorderLayout());
         mainWindow.add(topPanel, BorderLayout.PAGE_START);
 
@@ -65,57 +64,58 @@ public class ClientTest {
         logoutButton.addActionListener(e -> {
             createLogInGUI2();
         });
+//Zeigt den gerade angemeldeten Benutzer im Toppanel an
+        JLabel loggedIn = new JLabel("Angemeldet als "+username+"  ");
+        topPanel.add(loggedIn,BorderLayout.LINE_END);
 
-        JLabel loggedin = new JLabel("Angemeldet als "+username+"  ");
-        topPanel.add(loggedin,BorderLayout.LINE_END);
+//erstellt einzelne Panels für alle Lieder, fügt einen upvotebutton hinzu und fügt diese Panels dem contentPanel hinzu
+        for (int z = 0; z < songList.size(); z++) {
 
-
-        for (int z = 0; z < songList.size(); z++) { //erstellt die einzelnen Panels für alle Lieder, fügt einen upvotebutton hinzu und fügt diese Panels dem contentPanel hinzu
-
-            JPanel titelPanel = new JPanel();
-            contentPanel.add(titelPanel);
-            titelPanel.setLayout(new BorderLayout());
-
+            JPanel titlePanel = new JPanel();
+            contentPanel.add(titlePanel);
+            titlePanel.setLayout(new BorderLayout());
+//schaut ob ein Panel eine gerade oder ungerade Zahl hat und verändert die Panelfarbe für eine benutzerfreundlichere GUI
             if (z % 2 == 0) {
-                titelPanel.setBackground(Color.lightGray);
+                titlePanel.setBackground(Color.lightGray);
             } else {
-                titelPanel.setBackground(Color.white);
+                titlePanel.setBackground(Color.white);
             }
 
             JLabel title = new JLabel("  "+songList.get(z).getTitle());
-            titelPanel.add(title, BorderLayout.CENTER);
+            titlePanel.add(title, BorderLayout.CENTER);
 
 
-            titelPanel.add(buttonList.get(z), BorderLayout.LINE_END);
+            titlePanel.add(buttonList.get(z), BorderLayout.LINE_END);
 
 
 
         }
 
-
-        JPanel contentPanels2 = new JPanel();
-        contentPanels2.setLayout(new BoxLayout(contentPanels2, BoxLayout.PAGE_AXIS));
-
-        JScrollPane rightScrollPanel = new JScrollPane(contentPanels2, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        rightScrollPanel.setBackground(Color.green);
+//erstellt ein zweites contentPanel für die rechte Hälfte und fügt dieses ins Rootpanel ein
+        JPanel contentPanel2 = new JPanel();
+        contentPanel2.setLayout(new BoxLayout(contentPanel2, BoxLayout.PAGE_AXIS));
+//erstellt ein Scrollpanel für das rechte Contentpanel und verändert dessen Scrollgeschwindigkeit
+        JScrollPane rightScrollPanel = new JScrollPane(contentPanel2, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         rootPanel.add(rightScrollPanel);
         rightScrollPanel.getVerticalScrollBar().setUnitIncrement(15);
 
 
-
+//mainwindow muss aktiv werden um die Höhe der einzelnen LiederPanels zu bekommen
         mainWindow.setVisible(true);
-
+//sortiert die Lieder nach der Anzahl der Stimmen absteigend
+        bubblesort();
+//erstellt die Rankingliste für die rechte Seite mit Platz, Titel und Stimmen
         for (int z = 0; z < songList.size(); z++) {
             JPanel titlePanelRight = new JPanel(new BorderLayout());
-            contentPanels2.add(titlePanelRight);
+            contentPanel2.add(titlePanelRight);
             titlePanelRight.setPreferredSize(new Dimension(contentPanel.getComponent(0).getWidth(),contentPanel.getComponent(0).getHeight()));
 
-            JLabel titleVotes = new JLabel(voteList.get(z).getTitle(),SwingConstants.CENTER);
+            JLabel titleVotes = new JLabel((z+1)+". "+voteList.get(z).getTitle(),SwingConstants.CENTER);
             titlePanelRight.add(titleVotes, BorderLayout.CENTER);
 
             JLabel voteVotes = new JLabel("Stimmen: " + voteList.get(z).getVotes()+"   ");
             titlePanelRight.add(voteVotes,BorderLayout.LINE_END);
-
+//schaut ob ein Panel eine gerade oder ungerade Zahl hat und verändert die Panelfarbe für eine benutzerfreundlichere GUI
             if (z % 2 == 0) {
                 titlePanelRight.setBackground(Color.lightGray);
             } else {
@@ -126,12 +126,14 @@ public class ClientTest {
 
 
     private static void createButtonList() {
+//erstellt genauso viele Buttons wie es Lieder gibt und fügt diese einer Liste zu um sie gezielt abzugreifen
         for (int z = 0; z < songList.size(); z++) {
             buttonList.add(new JButton("upvote"));
         }
 
     }
     private static void createButtonAction() {
+//fügt den einzelnen Buttons eine Funktion hinzu, wie die Stimmfunktion und dass jeder Knopf nur einmal gedrückt werden kann
         for (final JButton button : buttonList) {
             button.addActionListener(e -> {
                         int i = buttonList.indexOf(button);
@@ -140,23 +142,28 @@ public class ClientTest {
                         int v = songList.get(i).getVotes();
                         v = v + 1;
                         songList.get(i).setVotes(v);
+//nachdem für ein Lied gestimmt worden ist, soll sich die Voteliste aktualisieren und sich auf die GUI übertragen
                         bubblesort();
-                        mainWindow.repaint();
+                        mainWindow.repaint(); //geht nicht!!
                     }
             );
         }
     }
     private static void createSongListTest() {
+//erstellt fiktive Lieder um die Arbeit und den Umgang mit der GUI zu verdeutlichen (nur solange aktiv bis lieder durch Programm hinzugefügt werden)
         for (int i = 0; i < 50; i++) {
             songList.add(new Songtest("titel " + i, "fabi"));
         }
     }
     private static void createVoteList() {
+//überträgt die Lieder der SongList in die VoteList, um sie später unabhängig behandeln zu können
         for (int i = 0; i < songList.size(); i++) {
             voteList.add(songList.get(i));
         }
     }
     private static void createLogInGUI(){
+//erstellt den Dialog der auftaucht sobald man das Programm zum ersten mal startet, bei abbruch oder X wird programm beendet, sonst soll neuer Benutzer angenommen und angezeigt werden,
+//für neuen Benutzer soll die Votefunktion wiederhergestellt werden
         String input = JOptionPane.showInputDialog( "Username" );
         if (input == null){
             System.exit(0);
@@ -164,10 +171,11 @@ public class ClientTest {
         else{
             newusername = input;
             activateButtons();
-            mainWindow.getComponent(0).repaint(); //geht nicht
+            mainWindow.getComponent(0).repaint(); //geht auch nicht, genauso wie mainWindow.repaint()
         }
-    }      //erstellt den Dialog der auftaucht sobald man das Programm zum ersten mal startet, bei abbruch oder X wird programm beendet
-    private static void createLogInGUI2 (){     //erstellt den Dialog der auftaucht wenn man den benutzer wechseln will, andere action bei abbruch
+    }
+    private static void createLogInGUI2 (){
+//erstellt den Dialog der auftaucht wenn man den benutzer wechseln will, Dialog verschwindet bei Abbruch oder X und beendet nicht mehr das Programm
         String input2 = JOptionPane.showInputDialog("Username");
         if (input2 != null){
             newusername = input2;
@@ -176,8 +184,8 @@ public class ClientTest {
         }
 
     }
-
     private static void bubblesort(){
+//sortiert die lieder nach den Votes, nicht der schnellste, jedoch ausreiched
         Songtest temp;
         for(int i=1; i<voteList.size(); i++) {
             for(int j=0; j<voteList.size()-i; j++) {
@@ -191,28 +199,23 @@ public class ClientTest {
 
             }
         }
-    } //sortiert die lieder nach den Votes
-
+    }
     private static void activateButtons(){
+//reaktiviert alle Buttons, wenn sich ein neuer Benutzer anmeldet und ändert die username variable
         if(!newusername.equals(username)){
             for (int i = 0; i<buttonList.size();i++){
                 buttonList.get(i).setEnabled(true);
-                test();
                 username = newusername;
             }
         }
     }
-
     private static String getPlaying(){
+//sucht das aktuell gespielte Lied um es in der Fußleiste anzeigen zulassen und gibt den Titel des Liedes zurück
         for(int i = 0; i<songList.size();i++){
             if (songList.get(i).getPlaying()){
                 return songList.get(i).getTitle();
             }
         }
         return "leider gar nichts :(";
-    }
-
-    private static void test(){
-
     }
 }
