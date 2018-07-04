@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientTest {
-//erstellt verschiedene Listen und Variablen die aus der ganzen Klasse aufbar sein sollen
+//erstellt verschiedene Listen und Variablen die aus der ganzen Klasse aufrufbar sein sollen
     private static String username = "Benutzer";
     private static String newusername;
     private static final List<Songtest> songList = new ArrayList<>();
