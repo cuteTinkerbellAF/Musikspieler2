@@ -1,3 +1,4 @@
+//erstellt von Fabian und Stefanie
 package ClientTest;
 public class Songtest {
 //Klasse um verschiedene Objekte für verschiedene Songs zu erstellen
