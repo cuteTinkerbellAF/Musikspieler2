@@ -30,7 +30,7 @@ public class ClientTest {
 
 //erstellt MainWindow
         mainWindow.setSize(1000, 700);
-        mainWindow.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        mainWindow.setExtendedState(java.awt.Frame.MAXIMIZED_BOTH); //funktioniert auf dem Schullaptop nicht, daheim auf Fabis Pc hats funktioniert...
         mainWindow.setResizable(false);
         mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainWindow.setLayout(new BorderLayout());
